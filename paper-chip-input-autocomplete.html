@@ -284,6 +284,13 @@ Custom property | Description | Default
 						type: Boolean,
 						value: false
 					},
+
+					/**
+					* Set a limit to the auto-completion result.
+					*/
+					limitResult: {
+						type: Number
+					},
 					_autoValidate: {
 						type: Boolean,
 						value: false
@@ -399,9 +406,9 @@ Custom property | Description | Default
 				let filteredByString = this.source.filter(element => this._filterBySearchString(element));
 
 				if (filteredByString.length > 0 && this.items.length) {
-					this._filteredSource = filteredByString.filter(element => this._filterByExistingPaperChip(element));
+					this._filteredSource = this._getFiltredData(filteredByString.filter(element => this._filterByExistingPaperChip(element)));
 				} else {
-					this._filteredSource = filteredByString;
+					this._filteredSource = this._getFiltredData(filteredByString);
 				}
 			}
 
@@ -461,6 +468,10 @@ Custom property | Description | Default
 					composed: true,
 					bubbles: true
 				}));
+			}
+
+			_getFiltredData(filtredData) {
+				return this.limitResult ? filtredData.slice(0, this.limitResult) : filtredData;
 			}
 
 		}
